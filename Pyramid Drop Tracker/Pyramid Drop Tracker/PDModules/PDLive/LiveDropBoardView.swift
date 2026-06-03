@@ -1,3 +1,11 @@
+//
+//  LiveDropBoardView.swift
+//  Pyramid Drop Tracker
+//
+//
+
+import SwiftUI
+
 // MARK: - Live Board
 
 struct LiveDropBoardView: View {
@@ -28,27 +36,9 @@ struct LiveDropBoardView: View {
                         Button {
                             viewModel.finishSession(reason: .manualExit)
                         } label: {
-                            HStack {
-                                Image(systemName: "wallet.pass.fill")
-                                    .font(.title)
-                                VStack(alignment: .leading) {
-                                    Text("CASH OUT!")
-                                        .font(.headline.bold())
-                                    Text("Lock in your profit")
-                                        .font(.subheadline)
-                                }
-                                Spacer()
-                            }
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(
-                                LinearGradient(
-                                    colors: [.purple, .pink.opacity(0.7), .purple],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
-                            .cornerRadius(18)
+                            Image(.cashOutBtn)
+                                .resizable()
+                                .scaledToFit()
                         }
                     }
                     .padding(.horizontal, 20)
@@ -75,7 +65,7 @@ struct LiveTopPanel: View {
         NeonCard {
             HStack(spacing: 10) {
                 LiveMetricView(
-                    title: "BALANCE",
+                    title: "liveText1",
                     value: session.currentBalance.moneyString,
                     subtitle: "Start: \(session.startBalance.noZero)$"
                 )
@@ -84,7 +74,7 @@ struct LiveTopPanel: View {
                     .background(Color.blue)
                 
                 LiveMetricView(
-                    title: "SESSION ROI",
+                    title: "liveText2",
                     value: session.roi.percentString,
                     subtitle: session.profit.moneyString
                 )
@@ -93,7 +83,7 @@ struct LiveTopPanel: View {
                     .background(Color.blue)
                 
                 LiveMetricView(
-                    title: "SESSION TIME",
+                    title: "liveText3",
                     value: session.duration(until: now).timeString,
                     subtitle: ""
                 )
@@ -109,9 +99,10 @@ struct LiveMetricView: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            Text(title)
-                .font(.caption.bold())
-                .foregroundColor(.white)
+            Image(title)
+                .resizable()
+                .scaledToFit()
+                .frame(height: 17)
             
             Text(value)
                 .font(.headline.bold())
@@ -150,39 +141,36 @@ struct TiltRadarPanel: View {
             case .locked: return "Calm down. Interface locked."
             }
         }()
-        
-        HStack {
-            Image(systemName: "target")
-                .foregroundColor(color)
-                .font(.title2)
-            
-            VStack(alignment: .leading) {
-                Text("TILT RADAR")
-                    .font(.headline.bold())
-                    .foregroundColor(color)
+        NeonCard {
+            HStack {
+                Image(.liveIcon1)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 36)
                 
-                Text(message)
-                    .font(.caption)
-                    .foregroundColor(.white)
-            }
-            
-            Spacer()
-            
-            HStack(spacing: 6) {
-                Image(systemName: "circle.fill")
-                    .foregroundColor(.pink)
-                Text("\(dropsCount)")
-                    .font(.title3.bold())
-                    .foregroundColor(.white)
+                VStack(alignment: .leading) {
+                    Text("TILT RADAR")
+                        .font(.headline.bold())
+                        .foregroundColor(color)
+                    
+                    Text(message)
+                        .font(.caption)
+                        .foregroundColor(.white)
+                }
+                
+                Spacer()
+                
+                HStack(spacing: 6) {
+                    Image(.liveIcon2)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 31)
+                    Text("\(dropsCount)")
+                        .font(.title3.bold())
+                        .foregroundColor(.white)
+                }
             }
         }
-        .padding()
-        .background(Color.blue.opacity(0.35))
-        .cornerRadius(16)
-        .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(color, lineWidth: 2)
-        )
     }
 }
 
@@ -287,4 +275,8 @@ struct EmptyLiveView: View {
             Spacer()
         }
     }
+}
+
+#Preview {
+    ContentView()
 }

@@ -1,3 +1,11 @@
+//
+//  Formatter + ext.swift
+//  Pyramid Drop Tracker
+//
+//
+
+import SwiftUI
+
 // MARK: - Formatters
 
 extension Double {
@@ -64,6 +72,18 @@ extension Date {
     var shortDateTime: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM d, yyyy HH:mm"
+        return formatter.string(from: self)
+    }
+    
+    var shortDate: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, yyyy"
+        return formatter.string(from: self)
+    }
+    
+    var shortTime: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
         return formatter.string(from: self)
     }
 }

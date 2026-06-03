@@ -1,3 +1,11 @@
+//
+//  ArchiveView.swift
+//  Pyramid Drop Tracker
+//
+//
+
+import SwiftUI
+
 // MARK: - Archive
 
 struct ArchiveView: View {
@@ -13,28 +21,20 @@ struct ArchiveView: View {
             if viewModel.sessions.isEmpty {
                 Spacer()
                 
-                VStack(spacing: 20) {
-                    Text("THIS FIELD IS EMPTY.\nSTART A NEW SESSION.")
-                        .font(.title3.bold())
-                        .foregroundColor(.purple.opacity(0.9))
-                        .multilineTextAlignment(.center)
-                    
-                    Image(systemName: "face.dashed")
-                        .font(.system(size: 80))
-                        .foregroundColor(.purple)
+                VStack(spacing: 24) {
+                    Image(.emptyArch)
+                        .resizable()
+                        .scaledToFit()
+                        .padding(.horizontal, 20)
                     
                     Button {
                         viewModel.selectedTab = .setup
                     } label: {
-                        Text("START DROPPING")
-                            .font(.headline.bold())
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.purple)
-                            .cornerRadius(16)
+                        Image(.startBtn)
+                            .resizable()
+                            .scaledToFit()
                     }
-                    .padding(.horizontal, 40)
+                    .padding(.horizontal, 20)
                 }
                 
                 Spacer()
@@ -59,45 +59,76 @@ struct SessionArchiveCard: View {
         NeonCard {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Label(session.startDate.shortDateTime, systemImage: "calendar")
-                            .foregroundColor(.white)
+                    VStack(alignment: .leading, spacing: 9) {
+                        HStack {
+                            Image(.archIcon1)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 36)
+                            
+                            VStack(alignment: .leading) {
+                                Text(session.startDate.shortDate)
+                                    .bold()
+                                    .foregroundColor(.white)
+                                Text(session.startDate.shortTime)
+                                    .bold()
+                                    .foregroundColor(.white.opacity(0.5))
+                            }
+                        }
                         
-                        Label("\(session.config.rows) rows / \(session.config.risk.displayTitle)", systemImage: "gearshape.fill")
-                            .foregroundColor(session.config.risk.color)
+                        HStack {
+                            Image(.archIcon2)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 36)
+                            
+                            VStack(alignment: .leading) {
+                                Text("\(session.config.rows) rows")
+                                    .bold()
+                                    .foregroundColor(.white)
+                                Text("\(session.config.risk.displayTitle)")
+                                    .bold()
+                                    .foregroundColor(session.config.risk.color)
+                            }
+                        }
                     }
                     
                     Spacer()
-                    
-                    Text(session.profit.moneyString)
-                        .font(.title2.bold())
-                        .foregroundColor(session.profit >= 0 ? .green : .red)
+                    VStack {
+                        Text(session.profit.moneyString)
+                            .font(.title2.bold())
+                            .foregroundColor(session.profit >= 0 ? .green : .red)
+                        
+                        if let reason = session.endReason {
+                            Image(reason.icon)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 30)
+                        }
+                    }
                 }
                 
-                HStack {
+                HStack(spacing: 5) {
                     SmallInfoBadge(
+                        icon: "archIcon3",
                         title: "\(session.dropsCount)",
                         subtitle: "DROPS",
                         color: .purple
                     )
                     
                     SmallInfoBadge(
+                        icon: "archIcon4",
                         title: session.maxMultiplier.multiplierString,
                         subtitle: "MAX",
                         color: .orange
                     )
                     
                     SmallInfoBadge(
+                        icon: "archIcon5",
                         title: session.roi.percentString,
                         subtitle: "ROI",
                         color: .green
                     )
-                }
-                
-                if let reason = session.endReason {
-                    Text("Finished: \(reason.title)")
-                        .font(.caption.bold())
-                        .foregroundColor(.white.opacity(0.8))
                 }
             }
         }
@@ -105,21 +136,36 @@ struct SessionArchiveCard: View {
 }
 
 struct SmallInfoBadge: View {
+    let icon: String
     let title: String
     let subtitle: String
     let color: Color
     
     var body: some View {
-        VStack(spacing: 4) {
-            Text(title)
-                .font(.headline.bold())
-            Text(subtitle)
-                .font(.caption2.bold())
-        }
-        .foregroundColor(.white)
-        .padding(.vertical, 8)
-        .frame(maxWidth: .infinity)
-        .background(color.opacity(0.7))
-        .cornerRadius(10)
+        NeonDarkCard {
+            HStack {
+                Image(icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 20)
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title)
+                        .font(.system(size: 12, weight: .bold))
+                    Text(subtitle)
+                        .font(.system(size: 10, weight: .bold))
+                }
+                .foregroundColor(.white)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(-16)
+            .padding(.vertical, 10)
+            .padding(.horizontal, 6)
+        }.clipShape(RoundedRectangle(cornerRadius: 10))
+        
     }
+}
+
+#Preview {
+    ArchiveView(viewModel: PyramidDropViewModel())
 }

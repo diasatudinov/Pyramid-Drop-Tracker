@@ -1,13 +1,20 @@
+//
+//  RLLoaderView.swift
+//  Pyramid Drop Tracker
+//
+//
+
+
 import SwiftUI
 
-struct RLLoaderView: View {
+struct PDLoaderView: View {
     @State private var scale: CGFloat = 1.0
     @State private var progress: CGFloat = 0.0
     @State private var timer: Timer?
     var body: some View {
         ZStack {
             ZStack {
-                Image("RLLoaderImage")
+                Image("PDLoaderImage")
                     .resizable()
                     .ignoresSafeArea()
                     .scaledToFill()
@@ -18,7 +25,7 @@ struct RLLoaderView: View {
             
             VStack(spacing: 0) {
                 
-                Image("RLLoaderImage")
+                Image("PDLoaderImage")
                     .resizable()
                     .scaledToFit()
                     .frame(height: 200)
@@ -76,5 +83,5 @@ struct RLLoaderView: View {
 
 
 #Preview {
-    RLLoaderView()
+    PDLoaderView()
 }

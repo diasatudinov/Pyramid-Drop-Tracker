@@ -1,3 +1,11 @@
+//
+//  RulesView.swift
+//  Pyramid Drop Tracker
+//
+//
+
+import SwiftUI
+
 // MARK: - Rules
 
 struct RulesView: View {
@@ -7,44 +15,32 @@ struct RulesView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("PYRAMID\nDROP\nTRACKER")
-                .font(.system(size: 30, weight: .black))
-                .foregroundColor(.yellow)
-                .multilineTextAlignment(.center)
-                .padding(.top, 34)
-            
-            Text("RESPONSIBLE RULES")
-                .font(.headline.bold())
-                .foregroundColor(.yellow)
-            
-            Spacer()
+            Image(.ruleText)
+                .resizable()
+                .scaledToFit()
+                .frame(height: 130)
             
             RuleLargeCard(rule: rules[index])
+                .padding(.bottom, 40)
             
-            HStack(spacing: 24) {
+            HStack(spacing: 30) {
                 Button {
                     index = max(0, index - 1)
                 } label: {
-                    Label("BACK", systemImage: "chevron.left.2")
-                        .font(.headline.bold())
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(index == 0 ? Color.gray : Color.red)
-                        .cornerRadius(12)
+                    Image(index == 0 ? .backOffBtn : .backBtn)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 53)
                 }
                 .disabled(index == 0)
                 
                 Button {
                     index = min(rules.count - 1, index + 1)
                 } label: {
-                    Label("NEXT", systemImage: "chevron.right.2")
-                        .font(.headline.bold())
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(index == rules.count - 1 ? Color.gray : Color.green)
-                        .cornerRadius(12)
+                    Image(index == rules.count - 1 ? .nextOffBtn : .nextBtn)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 53)
                 }
                 .disabled(index == rules.count - 1)
             }
@@ -52,6 +48,11 @@ struct RulesView: View {
             Spacer()
         }
         .padding(.horizontal, 22)
+        .background(
+            Image(.rulesBg)
+                .resizable()
+                .ignoresSafeArea()
+        )
     }
 }
 
@@ -60,33 +61,11 @@ struct RuleLargeCard: View {
     
     var body: some View {
         VStack(spacing: 18) {
-            ZStack {
-                Circle()
-                    .fill(rule.color.opacity(0.25))
-                    .frame(width: 100, height: 100)
-                
-                Image(systemName: rule.icon)
-                    .font(.system(size: 48))
-                    .foregroundColor(.white)
-            }
-            
-            Text("\(rule.number)")
-                .font(.title.bold())
-                .foregroundColor(.white)
-                .padding(10)
-                .background(rule.color)
-                .clipShape(Circle())
-            
-            Text(rule.title)
-                .font(.title3.bold())
-                .foregroundColor(.white)
-            
-            Text(rule.text)
-                .font(.body)
-                .foregroundColor(.white.opacity(0.9))
-                .multilineTextAlignment(.center)
+            Image(rule.icon)
+                .resizable()
+                .scaledToFit()
         }
-        .padding(28)
+        .padding(24)
         .frame(maxWidth: .infinity)
         .background(
             LinearGradient(
@@ -101,4 +80,55 @@ struct RuleLargeCard: View {
                 .stroke(rule.color, lineWidth: 3)
         )
     }
+}
+
+#Preview {
+    RulesView()
+}
+
+struct RuleCardModel: Identifiable {
+    let id = UUID()
+    let number: Int
+    let icon: String
+    let title: String
+    let text: String
+    let color: Color
+    
+    static let samples: [RuleCardModel] = [
+        .init(
+            number: 1,
+            icon: "rule1",
+            title: "Illusion of Control",
+            text: "You can’t control where the ball goes. It’s pure RNG. Every drop is independent.",
+            color: .purple
+        ),
+        .init(
+            number: 2,
+            icon: "rule2",
+            title: "Magnetic Center",
+            text: "On 16 rows, the ball often lands in central zones. Build your bankroll around that.",
+            color: .red
+        ),
+        .init(
+            number: 3,
+            icon: "rule3",
+            title: "100-Drop Rule",
+            text: "If the multiplier doesn’t hit in 100 drops, don’t increase your bet. The algorithm has no memory.",
+            color: .blue
+        ),
+        .init(
+            number: 4,
+            icon: "rule4",
+            title: "Spam Protection",
+            text: "Don’t drop 10 balls at once. It leads to loss of control. Track each drop.",
+            color: .orange
+        ),
+        .init(
+            number: 5,
+            icon: "rule5",
+            title: "Stop-Breath Rule",
+            text: "After 3 losses in a row, take a 1-minute break. Adrenaline distorts risk assessment.",
+            color: .green
+        )
+    ]
 }

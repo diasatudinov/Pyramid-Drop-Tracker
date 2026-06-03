@@ -1,3 +1,11 @@
+//
+//  ContentView.swift
+//  Pyramid Drop Tracker
+//
+//
+
+import SwiftUI
+
 // MARK: - Root
 
 struct ContentView: View {
@@ -44,4 +52,8 @@ struct ContentView: View {
             ArchiveView(viewModel: viewModel)
         }
     }
+}
+
+#Preview {
+    ContentView()
 }

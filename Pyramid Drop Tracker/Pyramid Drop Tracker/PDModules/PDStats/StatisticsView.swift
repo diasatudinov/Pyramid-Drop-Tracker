@@ -1,3 +1,11 @@
+//
+//  StatisticsView.swift
+//  Pyramid Drop Tracker
+//
+//
+
+import SwiftUI
+
 // MARK: - Statistics
 
 struct StatisticsView: View {
@@ -13,21 +21,25 @@ struct StatisticsView: View {
                 
                 HStack {
                     MetricCard(
+                        icon: "statsIcon1",
                         title: "TOTAL\nSESSIONS",
                         value: "\(viewModel.totalSessions)"
                     )
                     
                     MetricCard(
+                        icon: "statsIcon2",
                         title: "OVERALL\nROI",
                         value: viewModel.overallROI.percentString
                     )
                     
                     MetricCard(
+                        icon: "statsIcon3",
                         title: "DISCIPLINE\nRATE",
                         value: viewModel.disciplineRate.percentString
                     )
                     
                     MetricCard(
+                        icon: "statsIcon4",
                         title: "AVG SESSION\nTIME",
                         value: viewModel.averageSessionTime.shortMinutesString
                     )
@@ -63,28 +75,32 @@ struct StatisticsView: View {
 }
 
 struct MetricCard: View {
+    let icon: String
     let title: String
     let value: String
     
     var body: some View {
-        VStack(spacing: 8) {
-            Text(title)
-                .font(.caption2.bold())
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
-            
-            Text(value)
-                .font(.headline.bold())
-                .foregroundColor(.yellow)
+        NeonCard {
+            VStack(spacing: 8) {
+                Image(icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 36)
+                
+                Text(title)
+                    .font(.caption2.bold())
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                
+                Text(value)
+                    .font(.headline.bold())
+                    .foregroundColor(.yellow)
+                
+            }
+            .padding(-16)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 14)
-        .background(Color.purple.opacity(0.35))
-        .cornerRadius(14)
-        .overlay(
-            RoundedRectangle(cornerRadius: 14)
-                .stroke(Color.purple, lineWidth: 1)
-        )
     }
 }
 
@@ -157,4 +173,8 @@ struct BankrollLineChart: View {
             }
         }
     }
+}
+
+#Preview {
+    StatisticsView(viewModel: PyramidDropViewModel())
 }
